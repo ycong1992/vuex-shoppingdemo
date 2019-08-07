@@ -5,7 +5,7 @@
       :key="product.id">
       <p>型号：{{ product.title }}&nbsp;&nbsp;&nbsp;售价：{{ product.price }}</p>
       库存&nbsp;{{ product.inventory }}&nbsp;
-      <input type="number" style="width:40px;" min="0" :max="product.inventory" v-model="numbers[product.id]"/>&nbsp;&nbsp;&nbsp;
+      <input v-model="numbers[product.id]" type="number" style="width:40px;" min="0" :max="product.inventory" @input="handleNumberChange(product)"/>&nbsp;&nbsp;&nbsp;
       <button
         :disabled="!product.inventory"
         @click="addProductToCart(product)">
@@ -58,6 +58,16 @@ export default {
       }
       this.$store.dispatch('cart/addProductToCart', {product, number: this.numbers[product.id]});
       this.numbers[product.id] = product.inventory > 0 ? 1 : 0;
+    },
+    handleNumberChange(product) {
+      // Mark：不确定这里这样处理会不会影响效率
+      if (this.numbers[product.id] > product.inventory) {
+        this.numbers[product.id] = product.inventory;
+      } else if (!this.numbers[product.id]) {
+        this.numbers[product.id] = 0;
+      } else {
+        this.numbers[product.id] = parseInt(this.numbers[product.id]);
+      }
     }
   },
   created () {
