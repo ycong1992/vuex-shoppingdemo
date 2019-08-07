@@ -68,6 +68,7 @@ export default {
       } else {
         this.numbers[product.id] = parseInt(this.numbers[product.id]);
       }
+      // note：监听函数不传参时，可通过 e.target.value 获取输入值
     }
   },
   created () {
